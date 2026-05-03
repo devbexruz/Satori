@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "LIUvH4/Fh0k=",
+  "success": true,
+  "projectFilePath": "/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Api/Satori.Api.csproj",
+  "expectedPackageFiles": [
+    "/home/bexruz/.nuget/packages/microsoft.aspnetcore.openapi/10.0.5/microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/microsoft.entityframeworkcore/10.0.7/microsoft.entityframeworkcore.10.0.7.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/microsoft.entityframeworkcore.abstractions/10.0.7/microsoft.entityframeworkcore.abstractions.10.0.7.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/microsoft.entityframeworkcore.analyzers/10.0.7/microsoft.entityframeworkcore.analyzers.10.0.7.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/microsoft.entityframeworkcore.relational/10.0.4/microsoft.entityframeworkcore.relational.10.0.4.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/npgsql/10.0.2/npgsql.10.0.2.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/npgsql.entityframeworkcore.postgresql/10.0.1/npgsql.entityframeworkcore.postgresql.10.0.1.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/pgvector/0.3.2/pgvector.0.3.2.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/pgvector.entityframeworkcore/0.3.0/pgvector.entityframeworkcore.0.3.0.nupkg.sha512",
+    "/home/bexruz/.nuget/packages/scalar.aspnetcore/2.14.9/scalar.aspnetcore.2.14.9.nupkg.sha512"
+  ],
+  "logs": []
+}
