@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Satori.Api/Satori.Api.csproj" />
+  <Project Path="Satori.Application/Satori.Application.csproj" />
+  <Project Path="Satori.Domain/Satori.Domain.csproj" />
+  <Project Path="Satori.Infrastructure/Satori.Infrastructure.csproj" />
+</Solution>

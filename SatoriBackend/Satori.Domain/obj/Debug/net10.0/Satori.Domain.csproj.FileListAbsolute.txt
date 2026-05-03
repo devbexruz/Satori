@@ -1,0 +1,12 @@
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/bin/Debug/net10.0/Satori.Domain.deps.json
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/bin/Debug/net10.0/Satori.Domain.dll
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/bin/Debug/net10.0/Satori.Domain.pdb
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.AssemblyInfoInputs.cache
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.AssemblyInfo.cs
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.csproj.CoreCompileInputs.cache
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.sourcelink.json
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.dll
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/refint/Satori.Domain.dll
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/Satori.Domain.pdb
+/home/bexruz/Documents/MyProjects/Satori/SatoriBackend/Satori.Domain/obj/Debug/net10.0/ref/Satori.Domain.dll
