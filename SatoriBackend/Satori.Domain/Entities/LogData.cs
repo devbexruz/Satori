@@ -1,11 +1,12 @@
 namespace Satori.Domain.Entities;
+using Pgvector;
 
 // --- LOGGING & INSIGHTS ---
 
 public class LogData
 {
     public long Id { get; set; }
-    
+    public DateTime CreatedAt { get; set; }
     public long UserId { get; set; }
     public User User { get; set; } = null!;
 
@@ -25,5 +26,5 @@ public class LogData
     public string? Metadata { get; set; } 
     
     // pgvector uchun float massiv
-    public float[]? Embedding { get; set; } 
+    public Vector? Embedding { get; set; }
 }

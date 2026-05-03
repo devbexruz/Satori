@@ -1,9 +1,9 @@
 namespace Satori.Domain.Entities;
-
+using Microsoft.EntityFrameworkCore;
 using Satori.Domain.Enums;
 
 // --- USER ---
-
+[Index(nameof(Username), IsUnique = true)]
 public class User
 {
     public long Id { get; set; }
@@ -11,6 +11,7 @@ public class User
     public UserRole Role { get; set; }
     public string Username { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = string.Empty;
 
     // Navigation properties
     public ICollection<LogData> Logs { get; set; } = new List<LogData>();

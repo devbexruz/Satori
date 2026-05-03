@@ -1,4 +1,4 @@
-@Satori.Api_HostAddress = http://localhost:5297
+@Satori.Api_HostAddress = http://localhost:8080
 
 GET {{Satori.Api_HostAddress}}/weatherforecast/
 Accept: application/json

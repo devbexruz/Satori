@@ -1,0 +1,37 @@
+services:
+  satori-db:
+    image: pgvector/pgvector:pg16
+    container_name: satori-db
+    restart: always
+    environment:
+      POSTGRES_USER: satori_user
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: satori
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 100M # RAM tejash
+
+  satori-api:
+    build: .
+    container_name: satori-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=satori-db;Database=satori;Username=satori_user;Password=admin1234
+      - Gemini__ApiKey=YOUR_ACTUAL_API_KEY_HERE
+    ports:
+      - "8080:8080"
+    depends_on:
+      - satori-db
+    deploy:
+      resources:
+        limits:
+          memory: 200M # RAM tejash
+
+volumes:
+  postgres_data:

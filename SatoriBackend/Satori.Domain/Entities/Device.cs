@@ -1,6 +1,8 @@
 namespace Satori.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 // --- DEVICE ---
+[Index(nameof(SecretKey), IsUnique = true)]
 public class Device
 {
     public long Id { get; set; }
