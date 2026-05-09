@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Satori.Infrastructure\Satori.Infrastructure.csproj" />
+    <ProjectReference Include="..\Satori.Application\Satori.Application.csproj" />
   </ItemGroup>
 
 </Project>

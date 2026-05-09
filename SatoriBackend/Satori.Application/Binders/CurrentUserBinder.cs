@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Satori.Application.Interfaces.Repositories; // Repository interfeysi uchun
-using Satori.Domain.Entities;
+using Satori.Application.Interfaces.Repositories;
 using System.Security.Claims;
+
+namespace Satori.Application.Binders;
 
 public class CurrentUserBinder : IModelBinder
 {
-    private readonly IUserRepository _userRepository; // Sizning repository
+    private readonly IUserRepository _userRepository;
 
     public CurrentUserBinder(IUserRepository userRepository)
     {
@@ -14,16 +15,25 @@ public class CurrentUserBinder : IModelBinder
 
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        // Token validatsiyadan o'tgach, User.Identity ichida ID bo'ladi
+        // 1. JWT dan UserId ni o'qiymiz
         var userIdClaim = bindingContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (userIdClaim == null || !long.TryParse(userIdClaim, out var userId))
+        if (string.IsNullOrEmpty(userIdClaim) || !long.TryParse(userIdClaim, out var userId))
         {
             bindingContext.Result = ModelBindingResult.Failed();
             return;
         }
 
+        // 2. Bazadan foydalanuvchini yuklaymiz
         var user = await _userRepository.GetByIdAsync(userId);
-        bindingContext.Result = ModelBindingResult.Success(user);
+
+        if (user != null)
+        {
+            bindingContext.Result = ModelBindingResult.Success(user);
+        }
+        else
+        {
+            bindingContext.Result = ModelBindingResult.Failed();
+        }
     }
 }

@@ -1,11 +1,11 @@
-using Satori.Application.Exceptions;
-using Satori.Application.Exceptions.Auth;
+
 using Satori.Application.Exceptions.NotFound;
-using Satori.Application.Exceptions.AlreadyExists;
 using Satori.Application.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Satori.Application.Attributes;
+using Satori.Domain.Entities;
 
-namespace Satori.Api.Controllers.User
+namespace Satori.Api.Controllers.UserControllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -18,16 +18,10 @@ namespace Satori.Api.Controllers.User
         }
 
         [HttpGet("profile")]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile([FromCurrentUser] User user)
         {
-            var userId = HttpContext.Items["UserId"] as string;
-            if (userId == null){
-                throw new UnauthorizedException();
-            }
-
-            var user = await _userRepository.GetByIdAsync(long.Parse(userId));
             if (user == null){
-                throw new UserNotFoundedException();
+                throw new UnauthorizedException();
             }
 
             return Ok(new
