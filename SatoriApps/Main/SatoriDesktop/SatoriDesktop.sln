@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SatoriDesktop", "SatoriDesktop.csproj", "{AA1355F6-4DD7-5535-7F2D-D4FF2BF20BA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA1355F6-4DD7-5535-7F2D-D4FF2BF20BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA1355F6-4DD7-5535-7F2D-D4FF2BF20BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA1355F6-4DD7-5535-7F2D-D4FF2BF20BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA1355F6-4DD7-5535-7F2D-D4FF2BF20BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {912B1379-FBF2-45C6-82D2-006358FB19CD}
+	EndGlobalSection
+EndGlobal

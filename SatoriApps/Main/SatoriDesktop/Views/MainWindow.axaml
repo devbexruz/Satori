@@ -1,0 +1,123 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SatoriDesktop.ViewModels"
+        xmlns:models="using:SatoriDesktop.Models"
+        x:Class="SatoriDesktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="SATORI ENGINE"
+        Width="1100" Height="750"
+        Background="#07070A"
+        ExtendClientAreaToDecorationsHint="True"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid ColumnDefinitions="280, *">
+        
+        <Border Grid.Column="0" Background="#111116" BorderBrush="#1C1C24" BorderThickness="0,0,1,0">
+            <Grid RowDefinitions="Auto, *, Auto">
+                
+                <Expander Grid.Row="0" Margin="10,35,10,10" 
+                          Background="#16161D" CornerRadius="10" 
+                          HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <Grid ColumnDefinitions="Auto, *">
+                            <Border Width="40" Height="40" CornerRadius="20" Background="#00FFA3">
+                                <TextBlock Text="{Binding CurrentUser.AvatarInitials}" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                           FontWeight="Bold" Foreground="#07070A" FontSize="16"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentUser.Name}" FontWeight="Bold" Foreground="White" FontSize="15"/>
+                                <TextBlock Text="{Binding CurrentUser.Role}" Foreground="#8B8B9E" FontSize="12"/>
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
+                    
+                    <StackPanel Spacing="10" Margin="0,10,0,0">
+                        <Border Height="1" Background="#23232E"/> <Grid ColumnDefinitions="Auto, *">
+                            <TextBlock Text="Email:" Foreground="#8B8B9E" FontSize="12" Width="60"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentUser.Email}" Foreground="#C0CAF5" FontSize="12"/>
+                        </Grid>
+                        
+                        <Grid ColumnDefinitions="Auto, *">
+                            <TextBlock Text="Status:" Foreground="#8B8B9E" FontSize="12" Width="60"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentUser.Status}" Foreground="#00FFA3" FontSize="12"/>
+                        </Grid>
+                        
+                        <Button Content="Tizimdan chiqish" 
+                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                Background="#EF4444" Foreground="White" CornerRadius="6" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <StackPanel Grid.Row="1" Margin="20" Spacing="15">
+                    <TextBlock Text="NAVIGATION" Foreground="#565F89" FontSize="11" FontWeight="Bold" LetterSpacing="1"/>
+                    <Button Content="System Logs" Background="#23232E" Foreground="#00FFA3" HorizontalAlignment="Stretch" CornerRadius="6" Padding="15,10"/>
+                    <Button Content="Network Traffic" Background="Transparent" Foreground="#C0CAF5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="15,10"/>
+                    <Button Content="Security Alerts" Background="Transparent" Foreground="#C0CAF5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="15,10"/>
+                </StackPanel>
+                
+                <TextBlock Grid.Row="2" Text="SATORI ENGINE v1.0" Foreground="#2A2A35" FontSize="12" FontWeight="Bold" Margin="20" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" RowDefinitions="Auto, *, Auto" Margin="20,35,20,20">
+            
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="System Console" FontSize="28" FontWeight="Black" Foreground="White" LetterSpacing="1"/>
+                    <TextBlock Text="Real-time log monitoring and execution" Foreground="#8B8B9E" FontSize="13"/>
+                </StackPanel>
+                
+                <TextBox Grid.Column="1" Width="250" PlaceholderText="Search logs..." 
+                         Background="#111116" BorderThickness="1" BorderBrush="#23232E"
+                         CornerRadius="8" Padding="15,8" Foreground="White"/>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Logs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:LogEntry">
+                            <Border Background="#0F0F14" 
+                                    CornerRadius="8" 
+                                    Margin="0,0,0,10" 
+                                    BorderThickness="4,1,1,1">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{Binding IndicatorColor}"/>
+                                </Border.BorderBrush>
+                                
+                                <Grid ColumnDefinitions="120, Auto, *">
+                                    <TextBlock Grid.Column="0" Text="{Binding Time}" Foreground="#565F89" FontFamily="Consolas" VerticalAlignment="Center"/>
+                                    
+                                    <Border Grid.Column="1" Background="{Binding IndicatorColor}" Opacity="0.2" CornerRadius="4" Padding="8,2" Margin="0,0,15,0">
+                                        <TextBlock Text="{Binding Level}" Foreground="{Binding IndicatorColor}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </Border>
+                                    
+                                    <TextBlock Grid.Column="2" Text="{Binding Message}" Foreground="#E2E8F0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" Margin="0,15,0,0" Background="#111116" CornerRadius="12" BorderThickness="1" BorderBrush="#23232E" Padding="5">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBox PlaceholderText="Enter root command or write log..."
+                             Background="Transparent"
+                             Foreground="#00FFA3" FontFamily="Consolas" FontSize="14"
+                             Padding="15,15"
+                             BorderBrush="Transparent"
+                             CornerRadius="10"
+                             BorderThickness="0"
+                             FocusAdorner="{x:Null}"
+                             />
+                    
+                    <Button Grid.Column="1" Content="EXECUTE LOG" 
+                            Background="#3B82F6" Foreground="White"
+                            FontWeight="Bold" CornerRadius="8" Padding="20, 10" Margin="5"/>
+                </Grid>
+            </Border>
+        </Grid>
+        
+    </Grid>
+</Window>

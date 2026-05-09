@@ -1,0 +1,126 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SatoriDesktop.Views.LoginWindow"
+        Title="SATORI | AUTHENTICATION"
+        Background="#0B0B0E"
+        Width="600" Height="600"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#1A1B26"/>
+            <Setter Property="Foreground" Value="#C0CAF5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#2D2E3F"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#1A1B26"/>
+        </Style>
+
+        <Style Selector="Button.satoriBtn">
+            <Setter Property="Background" Value="#7AA2F7"/>
+            <Setter Property="Foreground" Value="#1A1B26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="0,16"/>
+            <Setter Property="LetterSpacing" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="Button.satoriBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#8AB0F8"/>
+            <Setter Property="TextBlock.Foreground" Value="#0B0B0E"/>
+        </Style>
+        <Style Selector="Button.satoriBtn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#5D85DA"/>
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="#565F89"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style Selector="CheckBox /template/ Border">
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="BorderBrush" Value="#2D2E3F"/>
+            <Setter Property="Background" Value="#1A1B26"/>
+        </Style>
+
+        <Style Selector="TextBlock.link">
+            <Setter Property="Foreground" Value="#565F89"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="TextBlock.link:pointerover">
+            <Setter Property="Foreground" Value="#7AA2F7"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <Border Width="360" 
+                Background="#16161E" 
+                CornerRadius="12" 
+                Padding="35,40"
+                BorderBrush="#252530"
+                BorderThickness="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            
+            <StackPanel Spacing="25">
+                
+                <StackPanel Spacing="10" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                        <Border Width="8" Height="8" Background="#00FFA3" CornerRadius="4" VerticalAlignment="Center">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#00FFA3" BlurRadius="10"/>
+                            </Border.Effect>
+                        </Border>
+                        <TextBlock Text="SATORI SYSTEM" 
+                                   Foreground="#C0CAF5" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   LetterSpacing="3"/>
+                    </StackPanel>
+                    <TextBlock Text="AUTHENTICATION REQUIRED" 
+                               Foreground="#565F89" 
+                               FontSize="11" 
+                               LetterSpacing="1"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Spacing="15" Margin="0,15,0,0">
+                    <TextBox PlaceholderText="Username"/>
+                    <TextBox PlaceholderText="Password" PasswordChar="●"/>
+                </StackPanel>
+
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <CheckBox Grid.Column="0" Content="Sessiyani saqlash" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="2" Text="Kodni tiklash" Classes="link" VerticalAlignment="Center"/>
+                </Grid>
+
+                <Button Classes="satoriBtn" Content="EXECUTE LOGIN" Margin="0,10,0,0"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Margin="0,10,0,0">
+                    <TextBlock Text="Ruxsat yo'qmi?" Foreground="#565F89" FontSize="13"/>
+                    <TextBlock Text="Yangi ulanish yaratish" Classes="link"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
