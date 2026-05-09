@@ -1,4 +1,4 @@
-using Satori.Infrastructure.Interfaces;
+using Satori.Application.Interfaces;
 
 namespace Satori.Infrastructure.Services;
 

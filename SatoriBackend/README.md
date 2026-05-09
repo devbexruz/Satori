@@ -35,15 +35,20 @@ Gemini__Model="text-embedding-004"
 ## 📂 Loyiha tuzilishi
 ```text
 Satori/
-├── Backend/                 # Markaziy API va Mantiq
+├── SatoriBackend/                 # Markaziy API va Mantiq
 │   ├── Satori.Api/
 │   ├── Satori.Application/
 │   ├── Satori.Domain/
-│   └── Satori.Infrastructure/
-├── Microservices/           # Kelajakdagi boshqa xizmatlar (TBA)
-│   ├── Satori.TelegramBot/
-│   └── Satori.Scraper/
-└── docker-compose.yml
+│   ├── Satori.Infrastructure/
+│   ├── Microservices/           # Kelajakdagi boshqa xizmatlar (TBA)
+│   │   ├── Satori.TelegramBot/
+│   │   ├── Satori.Scraper/
+│   │   └── ...
+│   └── docker-compose.yml
+└── SatoriApps/
+    ├── Manga
+    ├── DayPlan
+    └── ...
 ```
 
 ## 🛠 Ishga tushirish
