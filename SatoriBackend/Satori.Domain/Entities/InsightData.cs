@@ -1,6 +1,5 @@
 namespace Satori.Domain.Entities;
 
-using Pgvector;
 using Satori.Domain.Enums;
 
 // --- INSIGHT DATA ---
@@ -18,7 +17,7 @@ public class InsightData
     public string? AnalysisData { get; set; } // jsonb
     public short? OverallScore { get; set; }  // smallint
     
-    public Vector? VectorSummary { get; set; } // pgvector
+    public float[]? VectorSummary { get; set; } // standard float array
     
     public string? PrimaryFocus { get; set; } // varchar(100)
 }

@@ -31,6 +31,6 @@ public class LoginController : ControllerBase
 
         // Javobga "Set-Cookie" headerini qo'shish
         Response.Cookies.Append("X-Access-Token", response.Token, cookieOptions);
-        return Ok(response.UserData);
+        return Ok(new { response.UserData, response.Token });
     }
 }

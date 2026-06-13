@@ -19,11 +19,7 @@ public static class InfrastructureRegistration
         
         // DbContext ni ro'yxatdan o'tkazish
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(
-                connectionString,
-                // Bu yerda Npgsql ga vektorlar bilan ishlashni aytamiz
-                npgsqlOptions => npgsqlOptions.UseVector()
-            ));
+            options.UseNpgsql(connectionString));
         AddServices(services);
         AddRepositories(services);
         return services; // Konteynerning o'zini qaytaradi

@@ -1,5 +1,4 @@
 namespace Satori.Domain.Entities;
-using Pgvector;
 
 // --- LOGGING & INSIGHTS ---
 
@@ -25,6 +24,6 @@ public class LogData
     // JSONB ustun uchun string yechimi yoki JsonDocument (string ishlashga osonroq)
     public string? Metadata { get; set; } 
     
-    // pgvector uchun float massiv
-    public Vector? Embedding { get; set; }
+    // float massiv
+    public float[]? Embedding { get; set; }
 }

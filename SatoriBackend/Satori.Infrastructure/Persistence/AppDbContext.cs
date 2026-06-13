@@ -23,16 +23,9 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // 1. PostgreSQL ga "pgvector" kengaytmasini o'rnatishni buyuramiz
-        modelBuilder.HasPostgresExtension("vector");
-
         // --- LogData jadvali sozlamalari ---
         modelBuilder.Entity<LogData>(entity =>
         {
-            // Vector ustunini Gemini 004 modeliga moslab (768 o'lcham) belgilaymiz
-            entity.Property(e => e.Embedding)
-                .HasColumnType("vector(768)");
-
             // Metadata ustunini JSONB formatiga o'tkazamiz
             entity.Property(e => e.Metadata)
                 .HasColumnType("jsonb");
@@ -41,9 +34,6 @@ public class AppDbContext : DbContext
         // --- InsightData jadvali sozlamalari ---
         modelBuilder.Entity<InsightData>(entity =>
         {
-            entity.Property(e => e.VectorSummary)
-                .HasColumnType("vector(768)");
-
             entity.Property(e => e.AnalysisData)
                 .HasColumnType("jsonb");
         });
