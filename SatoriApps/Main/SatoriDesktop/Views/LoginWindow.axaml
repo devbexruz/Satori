@@ -104,8 +104,8 @@
                 </StackPanel>
 
                 <StackPanel Spacing="15" Margin="0,15,0,0">
-                    <TextBox PlaceholderText="Username"/>
-                    <TextBox PlaceholderText="Password" PasswordChar="●"/>
+                    <TextBox PlaceholderForeground="AliceBlue" Foreground="#C0CAF5" PlaceholderText="Username"/>
+                    <TextBox PlaceholderForeground="AliceBlue" Foreground="#C0CAF5" PlaceholderText="Password" PasswordChar="●"/>
                 </StackPanel>
 
                 <Grid ColumnDefinitions="Auto, *, Auto">
