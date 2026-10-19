@@ -18,5 +18,9 @@ public class User
     public ICollection<InsightData> Insights { get; set; } = new List<InsightData>();
     public ICollection<Device> Devices { get; set; } = new List<Device>();
     public ICollection<FamilyMember> FamilyMemberships { get; set; } = new List<FamilyMember>();
-    public Family? OwnedFamily { get; set; } // Agar foydalanuvchi bitta oila yarata olsa
+    public Family? OwnedFamily { get; set; }
+
+    // Satori AI
+    public ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
+    public ICollection<AiMemory> AiMemories { get; set; } = new List<AiMemory>();
 }

@@ -41,6 +41,101 @@ namespace Satori.Infrastructure.Migrations
                     b.ToTable("Activities");
                 });
 
+            modelBuilder.Entity("Satori.Domain.Entities.ActivityLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AppSlug")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LogLevel")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasDefaultValue("{}");
+
+                    b.Property<string>("SessionId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppSlug");
+
+                    b.HasIndex("Category");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("satori_activity_logs", (string)null);
+                });
+
+            modelBuilder.Entity("Satori.Domain.Entities.AiMemory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AppSlug")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Vector>("Embedding")
+                        .HasColumnType("vector(768)");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<float>("Importance")
+                        .HasColumnType("real");
+
+                    b.Property<string>("MemoryType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("MemoryType");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("satori_ai_memories", (string)null);
+                });
+
             modelBuilder.Entity("Satori.Domain.Entities.Device", b =>
                 {
                     b.Property<long>("Id")
@@ -314,6 +409,27 @@ namespace Satori.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Satori.Domain.Entities.ActivityLog", b =>
+                {
+                    b.HasOne("Satori.Domain.Entities.User", "User")
+                        .WithMany("ActivityLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Satori.Domain.Entities.AiMemory", b =>
+                {
+                    b.HasOne("Satori.Domain.Entities.User", "User")
+                        .WithMany("AiMemories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Satori.Domain.Entities.Device", b =>
                 {
                     b.HasOne("Satori.Domain.Entities.User", "User")
@@ -462,6 +578,10 @@ namespace Satori.Infrastructure.Migrations
 
             modelBuilder.Entity("Satori.Domain.Entities.User", b =>
                 {
+                    b.Navigation("ActivityLogs");
+
+                    b.Navigation("AiMemories");
+
                     b.Navigation("Devices");
 
                     b.Navigation("FamilyMemberships");
