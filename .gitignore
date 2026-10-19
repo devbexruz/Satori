@@ -1,0 +1,78 @@
+# ==============================================================================
+# SATORI ECOSYSTEM — Global .gitignore
+# ==============================================================================
+
+# --- Environments & Secrets ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+*.cert
+*.certificate
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- .NET & C# ---
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+appsettings.json
+!appsettings.Development.json
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.fleet/
+
+# --- Databases & Local Storage ---
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# --- OS Artifacts ---
+.DS_Store
+Thumbs.db
+Desktop.ini
