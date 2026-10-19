@@ -1,0 +1,29 @@
+{
+  "app_id": "uz.satori.itachi_assist",
+  "name": "ItachiAssist AI",
+  "version": "1.0.0",
+  "category": "ai_agent",
+  "description": "Satori ekotizimining flagman AI agenti. Sharingan ko'zi va Itachi ovozi bilan.",
+  "author": "Bexruz",
+  "entry_point": {
+    "linux": "python3 desktop/itachi_core/main.py",
+    "windows": "python desktop/itachi_core/main.py"
+  },
+  "permissions": [
+    "screen_capture",
+    "microphone",
+    "satori_logs_read",
+    "satori_llm_access"
+  ],
+  "telemetry_stream": "realtime",
+  "ui": {
+    "type": "overlay",
+    "transparency": true,
+    "topmost": true,
+    "default_position": "bottom_right"
+  },
+  "dependencies": {
+    "python": ">=3.11",
+    "dotnet": ">=10.0"
+  }
+}

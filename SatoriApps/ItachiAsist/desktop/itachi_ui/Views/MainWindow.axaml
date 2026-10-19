@@ -1,0 +1,138 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ItachiUI.Controls;assembly=ItachiUI"
+        x:Class="ItachiUI.Views.MainWindow"
+
+        Title="ItachiAssist"
+        Width="320" Height="420"
+
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+
+        WindowStartupLocation="Manual"
+        Topmost="True"
+        ShowInTaskbar="False"
+
+        CanResize="False"
+        SystemDecorations="None">
+
+    <Window.Styles>
+        <!-- Chat bubble stil -->
+        <Style Selector="Border.chatBubble">
+            <Setter Property="Background" Value="#CC0D0D12"/>
+            <Setter Property="CornerRadius" Value="12,12,12,2"/>
+            <Setter Property="BorderBrush" Value="#44FF2200"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="MaxWidth" Value="260"/>
+        </Style>
+
+        <!-- Typing dots -->
+        <Style Selector="Ellipse.dot">
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="Height" Value="6"/>
+            <Setter Property="Fill" Value="#FFCC3300"/>
+        </Style>
+    </Window.Styles>
+
+    <!-- Asosiy konteyner — shaffof, sichqoncha bosish o'tib ketsin -->
+    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Spacing="0"
+                    Margin="0,0,12,16">
+
+            <!-- ─── Chat Maydoni ─────────────────────────────── -->
+            <Border x:Name="ChatPanel"
+                    Classes="chatBubble"
+                    IsVisible="False"
+                    Margin="0,0,12,8"
+                    MaxHeight="180">
+
+                <StackPanel Spacing="8">
+                    <!-- Thinking dots animatsiyasi -->
+                    <StackPanel x:Name="ThinkingPanel"
+                                Orientation="Horizontal"
+                                Spacing="5"
+                                HorizontalAlignment="Left"
+                                IsVisible="False">
+                        <Ellipse Classes="dot"/>
+                        <Ellipse Classes="dot"/>
+                        <Ellipse Classes="dot"/>
+                    </StackPanel>
+
+                    <!-- Javob matni -->
+                    <TextBlock x:Name="ChatText"
+                               Foreground="#EEEEFF"
+                               FontFamily="Consolas, Cascadia Code, Monospace"
+                               FontSize="13"
+                               LineHeight="20"
+                               TextWrapping="Wrap"
+                               MaxWidth="240"
+                               IsVisible="False"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ─── Input Maydoni ────────────────────────────── -->
+            <Border x:Name="InputPanel"
+                    Background="#BB0A0A10"
+                    CornerRadius="12"
+                    BorderBrush="#33FF2200"
+                    BorderThickness="1"
+                    Padding="10,6"
+                    Width="300"
+                    IsVisible="False">
+
+                <Grid ColumnDefinitions="*, Auto, Auto">
+                    <TextBox x:Name="InputBox"
+                             Grid.Column="0"
+                             Background="Transparent"
+                             Foreground="#DDDDFF"
+                             CaretBrush="#FF4400"
+                             BorderThickness="0"
+                             FontFamily="Consolas, Cascadia Code, Monospace"
+                             FontSize="13"
+                             Watermark="So'rov yozing..."
+                             Padding="4,6"
+                             VerticalAlignment="Center"
+                             KeyDown="InputBox_KeyDown"/>
+
+                    <!-- Ekran tugmasi -->
+                    <Button x:Name="ScreenBtn"
+                            Grid.Column="1"
+                            Background="Transparent"
+                            Foreground="#AA4422"
+                            FontSize="16"
+                            Padding="6,4"
+                            ToolTip.Tip="Ekranga qara"
+                            Click="ScreenBtn_Click">👁</Button>
+
+                    <!-- Yuborish tugmasi -->
+                    <Button x:Name="SendBtn"
+                            Grid.Column="2"
+                            Background="#441A0A"
+                            Foreground="#FF6633"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Padding="8,4"
+                            CornerRadius="8"
+                            Click="SendBtn_Click">▶</Button>
+                </Grid>
+            </Border>
+
+            <!-- ─── Sharingan Ko'z ────────────────────────────── -->
+            <local:SharinganControl x:Name="Sharingan"
+                                    Width="160" Height="160"
+                                    HorizontalAlignment="Right"
+                                    Cursor="Hand"
+                                    PointerPressed="Sharingan_Clicked"/>
+
+        </StackPanel>
+    </Grid>
+
+</Window>

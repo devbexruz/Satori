@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ItachiUI.Controls.SharinganControl"
+             Width="160" Height="160">
+
+    <!--
+        SharinganCanvas — code-behind da dinamik qo'shiladi.
+        Bu fayl faqat UserControl sifatida ro'yxatdan o'tadi.
+    -->
+    <Grid x:Name="RootGrid" />
+
+</UserControl>

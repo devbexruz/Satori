@@ -1,0 +1,33 @@
+# ItachiAssist — Python Core Requirements
+# ========================================
+# O'rnatish: pip install -r requirements.txt
+
+# --- Asinxron va asosiy ---
+asyncio-mqtt>=0.16.2     # Kelgusida MQTT uchun (ixtiyoriy)
+python-dotenv>=1.0.0     # .env fayldan konfiguratsiya
+
+# --- HTTP Client (Backend bilan aloqa) ---
+httpx>=0.27.0            # Async HTTP client
+
+# --- Ovoz (Phase 2) ---
+edge-tts>=6.1.9          # Microsoft Edge TTS (uz-UZ-SardorNeural)
+# rvc-python>=0.2.0      # RVC v2 (itachi.pth modeli bilan)
+# sounddevice>=0.4.6     # Audio o'ynatish (numpy bilan)
+# pygame>=2.5.0          # Alternativ audio o'ynatish
+
+# --- Ko'rish / Ekran (Phase 2) ---
+mss>=9.0.1               # Tezkor ekran surati
+Pillow>=10.0.0           # Rasm qayta ishlash (PIL)
+pytesseract>=0.3.10      # OCR (Tesseract kerak: apt install tesseract-ocr)
+
+# --- AI / Embedding (Phase 3) ---
+# google-generativeai>=0.8.0  # Gemini API
+# openai>=1.40.0               # OpenAI fallback
+
+# --- OS Watcher (Phase 3, Linux) ---
+# python-xlib>=0.33       # X11 oyna aniqlash (Linux)
+# pywin32>=306            # Windows oyna aniqlash
+
+# --- Log / Telemetry (Phase 3) ---
+# sqlalchemy>=2.0.0       # Lokal DB cache
+# asyncpg>=0.29.0         # PostgreSQL asinxron driver
