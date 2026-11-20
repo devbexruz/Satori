@@ -131,7 +131,7 @@ class UIBridge:
     def set_eye_idle(self, spin_speed: float = 1.0):
         self.send({
             "cmd": "EYE_STATE",
-            "mode": "IDLE_3TOMOE",
+            "mode": "IDLE",
             "spin_speed": spin_speed,
             "glow": "#AAFF0000"
         })
@@ -151,6 +151,26 @@ class UIBridge:
             "spin_speed": 6.5,
             "glow": "#FFFF0000"
         })
+
+    def set_eyes_opacity(self, opacity: float):
+        """
+        Itachining ko'zlar saffoligini (0 dan 100 gacha) o'rnatish.
+        0: ko'zlar o'chiq
+        100: Sharingan ko'zlari to'liq yonadi
+        """
+        self.send({
+            "cmd": "EYE_OPACITY",
+            "opacity": opacity
+        })
+
+    def trigger_wake_animation(self):
+        """
+        'Itachi' yoki 'Hey Itachi' eshitilganda chaqiriladi.
+        Ko'zlar 0 dan 100% gacha Ease-Out bilan chaqnaydi,
+        so'ngra 80% gacha Ease-In bilan o'rnashadi.
+        Itachining o'zi 50% dan 80% gacha ko'tariladi.
+        """
+        self.send({"cmd": "WAKE_UP"})
 
     def set_audio_amplitude(self, value: float):
         """Ovoz amplitudasi (0.0 → 1.0) — neon pulsatsiya uchun."""

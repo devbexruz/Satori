@@ -24,6 +24,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from event_bus import EventBus, Events
 from ui_bridge import UIBridge
+from plugins.itachi_agent import ItachiAgent
+from plugins.itachi_tts import ItachiTTSEngine
 
 # ============================================================
 # KONFIGURATSIYA
@@ -37,10 +39,21 @@ _UI_EXECUTABLE_WIN = _SCRIPT_DIR.parent / "itachi_ui" / "bin" / "Release" / "net
 
 
 def _get_ui_path() -> str:
-    """OS ga qarab UI yo'lini aniqlash."""
-    if sys.platform == "win32":
-        return str(_UI_EXECUTABLE_WIN)
-    return str(_UI_EXECUTABLE)
+    """OS ga qarab UI yo'lini aniqlash (Release yoki Debug)."""
+    ui_dir = _SCRIPT_DIR.parent / "itachi_ui" / "bin"
+    exe_name = "ItachiUI.exe" if sys.platform == "win32" else "ItachiUI"
+
+    # 1. Release tekshirish
+    release_path = ui_dir / "Release" / "net10.0" / exe_name
+    if release_path.exists():
+        return str(release_path)
+
+    # 2. Debug tekshirish
+    debug_path = ui_dir / "Debug" / "net10.0" / exe_name
+    if debug_path.exists():
+        return str(debug_path)
+
+    return str(release_path)
 
 
 # ============================================================
@@ -80,6 +93,10 @@ class ItachiCore:
         )
         self._shutdown_event = asyncio.Event()
 
+        # Itachi AI Agent & TTS
+        self.agent = ItachiAgent()
+        self.tts = ItachiTTSEngine(bridge=self.bridge)
+
         # Yüklangan plaginlar ro'yxati
         self._plugins = []
 
@@ -91,6 +108,8 @@ class ItachiCore:
             logging.getLogger("itachi").info("✅ UI tayyor! Ko'prik ishlayapti.")
             # UI ni ko'rsatish
             self.bridge.show_window()
+            # Barcha virtual ish stollarida (workspaces) ko'rinadigan qilish
+            self._make_sticky_on_all_workspaces()
             await asyncio.sleep(0.3)
             self.bridge.set_eye_idle()
 
@@ -130,18 +149,12 @@ class ItachiCore:
                 except asyncio.TimeoutError:
                     pass
 
-            # AI ga so'rov yuborish
-            if hasattr(self, "api_client") and self.api_client and self.api_client._available:
-                reply = await self.api_client.ask_ai(
-                    prompt=text,
-                    include_screen=include_screen,
-                    screen_ocr=screen_ocr,
-                )
-            else:
-                reply = (
-                    f"Backend ulangan emas. So'rovingiz: '{text[:60]}'\n"
-                    f"Backend ni ishga tushiring: uvicorn app.main:app"
-                )
+            # Gemini Itachi Agent orqali to'liq javob va harakatlar (Tool calling)
+            try:
+                reply = await self.agent.ask(prompt=text, context=screen_ocr)
+            except Exception as e:
+                logger.error(f"[Itachi] Agent xatosi: {e}")
+                reply = f"My focus was momentarily broken... Error: {e}"
 
             await self.bus.emit(Events.AGENT_RESPONSE, {
                 "text": reply,
@@ -151,17 +164,47 @@ class ItachiCore:
         @self.bus.on(Events.AGENT_RESPONSE)
         async def on_agent_response(data):
             text = data.get("text", "")
+            logger = logging.getLogger("itachi")
+            logger.info(f"🤖 Itachi: {text}")
+
             # Javobni UI ga yuborish
             self.bridge.send_chat_thinking(False)
-            self.bridge.set_eye_mangekyou()
             self.bridge.send_chat_reply(text)
-            # Ovoz plag'ini ulangandan so'ng shu yerda gapiradi (Phase 2)
-            await asyncio.sleep(2.0)
-            self.bridge.set_eye_idle()
+
+            # Itachi ovozi bilan gapirish (real-time amplitude sync)
+            try:
+                await self.tts.speak(text)
+            except Exception as e:
+                logger.error(f"[ItachiTTS] Gapirishda xato: {e}")
+            finally:
+                await asyncio.sleep(0.5)
+                self.bridge.set_eye_idle()
+
+        @self.bus.on("WAKE_WORD_DETECTED")
+        async def on_wake_word(data):
+            kw = data.get("keyword", "itachi")
+            logging.getLogger("itachi").info(f"🔥 [Wake] '{kw}' eshitildi! Itachi uyg'onmoqda...")
+            self.bridge.trigger_wake_animation()
 
         @self.bus.on(Events.SHUTDOWN)
         async def on_shutdown(data):
             self._shutdown_event.set()
+
+    def _make_sticky_on_all_workspaces(self):
+        """Linux GNOME/Mutter da oynani barcha virtual ish stollarida (workspaces) ko'rinadigan qilish."""
+        if sys.platform != "win32":
+            try:
+                import subprocess
+                cmd = (
+                    "for w in $(xdotool search --name 'ItachiAssist' 2>/dev/null); do "
+                    "xprop -id $w -f _NET_WM_STATE 32a -set _NET_WM_STATE '_NET_WM_STATE_STICKY,_NET_WM_STATE_ABOVE' 2>/dev/null; "
+                    "xdotool set_desktop_for_window $w 4294967295 2>/dev/null; "
+                    "done"
+                )
+                subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                logging.getLogger("itachi").info("🌐 [OS] Oyna barcha ish stollariga (all workspaces) biriktirildi.")
+            except Exception as e:
+                logging.getLogger("itachi").debug(f"[OS] Sticky xatosi: {e}")
 
     async def _load_plugins(self):
         """Plaginlarni yuklash va EventBus ga ulash."""
@@ -208,6 +251,16 @@ class ItachiCore:
             logger.info("[Plugins] ✅ VoicePlugin yuklandi")
         except Exception as e:
             logger.warning(f"[Plugins] VoicePlugin yuklanmadi: {e}")
+
+        # === Voice Listener (Wake word: "Itachi" / "Hey Itachi") ===
+        try:
+            from plugins.voice_listener import VoiceListenerPlugin
+            self.voice_listener = VoiceListenerPlugin(self.bus, self.bridge)
+            self.voice_listener.start()
+            self._plugins.append(self.voice_listener)
+            logger.info("[Plugins] ✅ VoiceListener yuklandi ('Itachi' / 'Hey Itachi' eshitmoqda)")
+        except Exception as e:
+            logger.warning(f"[Plugins] VoiceListener yuklanmadi: {e}")
 
         logger.info(f"[Plugins] Jami {len(self._plugins)} ta plagin yuklandi")
 
@@ -275,6 +328,11 @@ class ItachiCore:
     async def _graceful_shutdown(self):
         """Tizimni to'g'ri yopish."""
         logging.getLogger("itachi").info("⚡ To'xtatish signali...")
+        if hasattr(self, "voice_listener") and self.voice_listener:
+            try:
+                self.voice_listener.stop()
+            except Exception:
+                pass
         await self.bridge.stop()
         self._shutdown_event.set()
 
@@ -300,7 +358,25 @@ def parse_args():
     return parser.parse_args()
 
 
+_single_instance_lock_file = None
+
+
+def ensure_single_instance():
+    """Faqat bitta jarayon ishlashini ta'minlash (Single Instance Lock)."""
+    global _single_instance_lock_file
+    if sys.platform != "win32":
+        try:
+            import fcntl
+            lock_path = "/tmp/itachi_core_python.lock"
+            _single_instance_lock_file = open(lock_path, "w")
+            fcntl.flock(_single_instance_lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except (IOError, BlockingIOError, PermissionError):
+            print("⚠️ [ItachiCore] Boshqa ItachiAssist jarayoni allaqachon ishlamoqda! Ikkinchi nusxa to'xtatildi.")
+            sys.exit(0)
+
+
 def main():
+    ensure_single_instance()
     args = parse_args()
     setup_logging(debug=args.debug)
 
