@@ -17,11 +17,13 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add controllers (API endpoints) to the container.
 builder.Services.AddControllers();
+builder.Services.AddCors();
 
 // Build the application.
 var app = builder.Build();
 
 // Add middlewares to the application.
+app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
