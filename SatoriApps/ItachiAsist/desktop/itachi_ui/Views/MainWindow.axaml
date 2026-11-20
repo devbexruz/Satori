@@ -4,13 +4,11 @@
         x:Class="ItachiUI.Views.MainWindow"
 
         Title="ItachiAssist"
-        Width="320" Height="420"
+        Width="200" Height="200"
 
         Background="Transparent"
         TransparencyLevelHint="Transparent"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        ExtendClientAreaTitleBarHeightHint="-1"
+        TransparencyBackgroundFallback="Transparent"
 
         WindowStartupLocation="Manual"
         Topmost="True"
@@ -22,12 +20,12 @@
     <Window.Styles>
         <!-- Chat bubble stil -->
         <Style Selector="Border.chatBubble">
-            <Setter Property="Background" Value="#CC0D0D12"/>
-            <Setter Property="CornerRadius" Value="12,12,12,2"/>
-            <Setter Property="BorderBrush" Value="#44FF2200"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#DD0D0D14"/>
+            <Setter Property="CornerRadius" Value="14,14,14,2"/>
+            <Setter Property="BorderBrush" Value="#66FF2200"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="Padding" Value="14,10"/>
-            <Setter Property="MaxWidth" Value="260"/>
+            <Setter Property="MaxWidth" Value="280"/>
         </Style>
 
         <!-- Typing dots -->
@@ -36,23 +34,28 @@
             <Setter Property="Height" Value="6"/>
             <Setter Property="Fill" Value="#FFCC3300"/>
         </Style>
+
+        <!-- Slider stil -->
+        <Style Selector="Slider">
+            <Setter Property="Foreground" Value="#FFFF2200"/>
+        </Style>
     </Window.Styles>
 
-    <!-- Asosiy konteyner — shaffof, sichqoncha bosish o'tib ketsin -->
+    <!-- Asosiy konteyner — shaffof overlay -->
     <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
 
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Spacing="0"
-                    Margin="0,0,12,16">
+                    Spacing="8"
+                    Margin="0,0,14,16">
 
             <!-- ─── Chat Maydoni ─────────────────────────────── -->
             <Border x:Name="ChatPanel"
                     Classes="chatBubble"
                     IsVisible="False"
-                    Margin="0,0,12,8"
-                    MaxHeight="180">
+                    Margin="0,0,8,4"
+                    MaxHeight="200">
 
                 <StackPanel Spacing="8">
                     <!-- Thinking dots animatsiyasi -->
@@ -73,64 +76,124 @@
                                FontSize="13"
                                LineHeight="20"
                                TextWrapping="Wrap"
-                               MaxWidth="240"
+                               MaxWidth="260"
                                IsVisible="False"/>
                 </StackPanel>
             </Border>
 
-            <!-- ─── Input Maydoni ────────────────────────────── -->
+            <!-- ─── Input & Boshqaruv Maydoni ────────────────── -->
             <Border x:Name="InputPanel"
-                    Background="#BB0A0A10"
-                    CornerRadius="12"
-                    BorderBrush="#33FF2200"
-                    BorderThickness="1"
-                    Padding="10,6"
-                    Width="300"
+                    Background="#CC0A0A12"
+                    CornerRadius="14"
+                    BorderBrush="#44FF2200"
+                    BorderThickness="1.5"
+                    Padding="12,10"
+                    Width="310"
                     IsVisible="False">
 
-                <Grid ColumnDefinitions="*, Auto, Auto">
-                    <TextBox x:Name="InputBox"
-                             Grid.Column="0"
-                             Background="Transparent"
-                             Foreground="#DDDDFF"
-                             CaretBrush="#FF4400"
-                             BorderThickness="0"
-                             FontFamily="Consolas, Cascadia Code, Monospace"
-                             FontSize="13"
-                             Watermark="So'rov yozing..."
-                             Padding="4,6"
-                             VerticalAlignment="Center"
-                             KeyDown="InputBox_KeyDown"/>
+                <StackPanel Spacing="8">
+                    <!-- Oynani ko'chirish dastagi (Drag Handle) -->
+                    <Border Background="#44FFFFFF" Height="4" Width="48" CornerRadius="2"
+                            HorizontalAlignment="Center" Cursor="SizeAll"
+                            Margin="0,0,0,2"
+                            ToolTip.Tip="Ushlab boshqa joyga ko'chirish"
+                            PointerPressed="DragHandle_PointerPressed"/>
 
-                    <!-- Ekran tugmasi -->
-                    <Button x:Name="ScreenBtn"
-                            Grid.Column="1"
-                            Background="Transparent"
-                            Foreground="#AA4422"
-                            FontSize="16"
-                            Padding="6,4"
-                            ToolTip.Tip="Ekranga qara"
-                            Click="ScreenBtn_Click">👁</Button>
+                    <!-- Matn kiritish qatori -->
+                    <Grid ColumnDefinitions="*, Auto, Auto, Auto">
+                        <TextBox x:Name="InputBox"
+                                 Grid.Column="0"
+                                 Background="Transparent"
+                                 Foreground="#DDDDFF"
+                                 CaretBrush="#FF4400"
+                                 BorderThickness="0"
+                                 FontFamily="Consolas, Cascadia Code, Monospace"
+                                 FontSize="13"
+                                 Watermark="Itachiga so'rov yozing..."
+                                 Padding="4,6"
+                                 VerticalAlignment="Center"
+                                 KeyDown="InputBox_KeyDown"/>
 
-                    <!-- Yuborish tugmasi -->
-                    <Button x:Name="SendBtn"
-                            Grid.Column="2"
-                            Background="#441A0A"
-                            Foreground="#FF6633"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Padding="8,4"
-                            CornerRadius="8"
-                            Click="SendBtn_Click">▶</Button>
-                </Grid>
+                        <!-- Mikrofon tugmasi -->
+                        <Button x:Name="MicBtn"
+                                Grid.Column="1"
+                                Background="Transparent"
+                                Foreground="#FF4422"
+                                FontSize="15"
+                                Padding="6,4"
+                                ToolTip.Tip="Ovoz bilan gapirish"
+                                Click="MicBtn_Click">🎙</Button>
+
+                        <!-- Ekran tugmasi -->
+                        <Button x:Name="ScreenBtn"
+                                Grid.Column="2"
+                                Background="Transparent"
+                                Foreground="#FF5522"
+                                FontSize="16"
+                                Padding="6,4"
+                                ToolTip.Tip="Ekranga qara"
+                                Click="ScreenBtn_Click">👁</Button>
+
+                        <!-- Yuborish tugmasi -->
+                        <Button x:Name="SendBtn"
+                                Grid.Column="3"
+                                Background="#55200A"
+                                Foreground="#FF7733"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Padding="8,4"
+                                CornerRadius="8"
+                                Click="SendBtn_Click">▶</Button>
+                    </Grid>
+
+                    <!-- Ko'zlar Saffoligi (0 - 100%) slayderi -->
+                    <Border Background="#22000000" CornerRadius="8" Padding="8,6">
+                        <StackPanel Spacing="4">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="Ko'zlar Saffoligi (Yonish):"
+                                           FontSize="11"
+                                           Foreground="#AA9999"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock x:Name="OpacityLabel"
+                                           Grid.Column="1"
+                                           Text="50% (Auto)"
+                                           FontSize="11"
+                                           FontWeight="Bold"
+                                           Foreground="#FFFF3300"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Slider x:Name="EyeOpacitySlider"
+                                        Grid.Column="0"
+                                        Minimum="0" Maximum="100"
+                                        Value="50"
+                                        ValueChanged="EyeOpacitySlider_ValueChanged"/>
+                                <Button x:Name="AutoBtn"
+                                        Grid.Column="1"
+                                        Content="Auto"
+                                        FontSize="10"
+                                        Background="#333333"
+                                        Foreground="#AAAAAA"
+                                        Padding="6,2"
+                                        Margin="6,0,0,0"
+                                        CornerRadius="4"
+                                        Click="AutoBtn_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
             </Border>
 
-            <!-- ─── Sharingan Ko'z ────────────────────────────── -->
-            <local:SharinganControl x:Name="Sharingan"
-                                    Width="160" Height="160"
-                                    HorizontalAlignment="Right"
-                                    Cursor="Hand"
-                                    PointerPressed="Sharingan_Clicked"/>
+            <!-- ─── Itachi Avatari (Itachi + Sharingan Ko'zlar) ───── -->
+            <local:ItachiAvatarControl x:Name="ItachiAvatar"
+                                       Width="180" Height="180"
+                                       HorizontalAlignment="Right"
+                                       Cursor="Hand"
+                                       PointerPressed="Avatar_PointerPressed"
+                                       PointerMoved="Avatar_PointerMoved"
+                                       PointerReleased="Avatar_PointerReleased"/>
 
         </StackPanel>
     </Grid>

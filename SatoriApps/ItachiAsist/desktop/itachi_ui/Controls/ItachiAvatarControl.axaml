@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
+             x:Class="ItachiUI.Controls.ItachiAvatarControl">
+
+    <UserControl.Styles>
+        <Style Selector="Grid.avatarRoot">
+            <Setter Property="RenderTransform" Value="scale(1.0)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Grid.avatarRoot:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.04)"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid x:Name="RootGrid"
+          Classes="avatarRoot"
+          Width="180" Height="180"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Cursor="Hand">
+
+        <!-- 0. Orqa fon — Qizil Sharingan Aurası (ko'zlar yonganda kuchayadi) -->
+        <Border x:Name="AuraGlow"
+                Width="170" Height="170"
+                CornerRadius="85"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.0">
+            <Border.Background>
+                <RadialGradientBrush Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+                    <GradientStop Offset="0.0" Color="#66FF1A00"/>
+                    <GradientStop Offset="0.55" Color="#33CC0000"/>
+                    <GradientStop Offset="1.0" Color="#00000000"/>
+                </RadialGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <!-- 1. Quyi Qatlam: Itachining O'zi (Body, Face, Headband, Hair) — Default 50%, Max 80% -->
+        <Image x:Name="BaseItachiImage"
+               Source="{svg:SvgImage /Assets/Itachi.svg}"
+               Stretch="Uniform"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Width="180" Height="180"
+               Opacity="0.5"/>
+
+        <!-- 2. Yuqori Qatlam: Itachining Ko'zlari (Sharingan Eyes Overlay) — Default 0% (to'liq shaffof) -->
+        <Image x:Name="EyesOverlayImage"
+               Source="{svg:SvgImage /Assets/Itachi_eyes.svg}"
+               Stretch="Uniform"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Width="180" Height="180"
+               Opacity="0.0"/>
+
+        <!-- 3. Eng ustki nozik ko'z nuri (Eye flare/glint) — ko'zlar kuchli yonganda porlaydi -->
+        <Border x:Name="EyeFlare"
+                Width="100" Height="40"
+                Margin="0,-5,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.0"
+                IsHitTestVisible="False">
+            <Border.Background>
+                <RadialGradientBrush Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+                    <GradientStop Offset="0.0" Color="#55FF3300"/>
+                    <GradientStop Offset="0.7" Color="#22FF0000"/>
+                    <GradientStop Offset="1.0" Color="#00000000"/>
+                </RadialGradientBrush>
+            </Border.Background>
+        </Border>
+
+    </Grid>
+</UserControl>

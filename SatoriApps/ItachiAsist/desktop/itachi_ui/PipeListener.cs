@@ -79,15 +79,16 @@ public class PipeListener
 
     private void ProcessCommand(string json)
     {
-        try
+        // UI threadida ishlash (Avalonia talabi) — JSON parsing ichida bo'lishi kerak
+        // aks holda JsonDocument task boshlanmasdan dispose bo'lib ObjectDisposedException beradi
+        Dispatcher.UIThread.Post(() =>
         {
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
-            string cmd = root.GetProperty("cmd").GetString() ?? "";
-
-            // UI threadida ishlash (Avalonia talabi)
-            Dispatcher.UIThread.Post(() =>
+            try
             {
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+                string cmd = root.GetProperty("cmd").GetString() ?? "";
+
                 switch (cmd)
                 {
                     case "WINDOW":
@@ -95,6 +96,16 @@ public class PipeListener
                         break;
                     case "EYE_STATE":
                         HandleEyeStateCmd(root);
+                        break;
+                    case "EYE_OPACITY":
+                    case "EYES_OPACITY":
+                    case "SET_EYE_OPACITY":
+                        HandleEyeOpacityCmd(root);
+                        break;
+                    case "WAKE_UP":
+                    case "WAKE_ANIMATION":
+                    case "TRIGGER_WAKE":
+                        _window.TriggerWakeAnimation();
                         break;
                     case "AUDIO_AMP":
                         HandleAudioAmpCmd(root);
@@ -112,12 +123,16 @@ public class PipeListener
                         Console.Error.WriteLine($"[PipeListener] Noma'lum buyruq: {cmd}");
                         break;
                 }
-            });
-        }
-        catch (JsonException ex)
-        {
-            Console.Error.WriteLine($"[PipeListener] JSON xatosi: {ex.Message} | Input: {json}");
-        }
+            }
+            catch (JsonException ex)
+            {
+                Console.Error.WriteLine($"[PipeListener] JSON xatosi: {ex.Message} | Input: {json}");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[PipeListener] Buyruq bajarishda xatolik: {ex.Message}");
+            }
+        });
     }
 
     private void HandleWindowCmd(JsonElement root)
@@ -126,7 +141,8 @@ public class PipeListener
         switch (action)
         {
             case "SHOW":
-                _window.Show();
+                if (!_window.IsVisible) _window.Show();
+                _window.Activate();
                 break;
             case "HIDE":
                 _window.Hide();
@@ -136,11 +152,35 @@ public class PipeListener
 
     private void HandleEyeStateCmd(JsonElement root)
     {
-        string mode = root.TryGetProperty("mode", out var m) ? m.GetString() ?? "IDLE_3TOMOE" : "IDLE_3TOMOE";
+        string mode = root.TryGetProperty("mode", out var m) ? m.GetString() ?? "IDLE" : "IDLE";
         double speed = root.TryGetProperty("spin_speed", out var s) ? s.GetDouble() : 1.0;
         string glow = root.TryGetProperty("glow", out var g) ? g.GetString() ?? "#AAFF0000" : "#AAFF0000";
 
         _window.SetEyeState(mode, speed, glow);
+    }
+
+    private void HandleEyeOpacityCmd(JsonElement root)
+    {
+        double opacity = 0.0;
+        if (root.TryGetProperty("opacity", out var o))
+        {
+            opacity = o.GetDouble();
+        }
+        else if (root.TryGetProperty("value", out var v))
+        {
+            opacity = v.GetDouble();
+        }
+        else if (root.TryGetProperty("saffolik", out var s))
+        {
+            opacity = s.GetDouble();
+        }
+
+        if (opacity <= 1.0 && opacity > 0.0)
+        {
+            opacity *= 100.0;
+        }
+
+        _window.SetEyesOpacity(opacity);
     }
 
     private void HandleAudioAmpCmd(JsonElement root)
